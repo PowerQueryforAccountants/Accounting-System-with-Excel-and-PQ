@@ -1,0 +1,90 @@
+Payroll
+	https://excelpayroll.org/
+
+
+
+TODO:
+	Edit Linking 
+		Menu to Sheets
+		Sheets to Menu
+
+	Test GL - do i need to put data validation Listing?
+		validation listing in the Customer #, Account #, 
+		Entering transactions in GL is like entering MJs - Debit as positive and Credit as negative
+		Create customer # if the customer is an account customer
+
+	Test Collection system
+		make sure the AR acct # is correct
+		Make sure the Pivot Table is filtered to the AR account
+		fix the button to refresh pivot table
+
+		Create dropdown for Cust Name - make sure it autocompletes
+
+	Create a Supplier Tracking system
+		Copy the Collection Sytem
+		Create dropdown for Supplier Name - make sure it autocompletes
+
+
+	Customers
+		Data validation hightlight duplicates
+
+	Suppliers
+		Data validation hightlight duplicates
+
+	Enter only transactions in the yellow cells
+	Reddish highlight for items in the Input area that can't be change
+
+
+APPROACHES
+	* Excel 2016 Dynamic arrays - version sensitive - does not work in TBR excel
+		https://www.excelcampus.com/functions/dynamic-array-formulas-spill-ranges/
+
+	* Autocomplete without macro
+		* Conditional formatting - highlight if there's duplicate customers - first 50 rows
+		* Format the customers as table. Then add a named range to for the CustomersT[Customer Name column]
+		* In the GL, add 50 rows IMMEDIATELY above the Customer header - point the cells to the Customer table 50 rows
+		* Add a Data validation for Dropdown - in the GL, highlight the first 1000 rows for the destination. Add data validation, use source as customers (the name range you defined earlier)
+
+		* Do this for the the Customer, Supplier, and Account columns
+		* Add macro to refresh Pivot Tables
+
+	* Autocomplete using add-in
+		https://sites.google.com/site/beyondexcel/project-updates/comboboxdatavalidationadd-in
+		Instructions
+		Set up the validation as normal
+		Advantage: No need for clunky workaround
+		Disadvantage: Not online. Will not work on a Mac.
+		Workaround: Place it inside a sync folder
+
+		* Do this for the the Customer, Supplier, and Account columns
+		* Add macro to refresh Pivot Tables
+
+	* Google sheets
+		https://www.ozgrid.com/Excel/autocomplete-validation.htm
+		Advantage: Autocomplete feature built in - datasource 50, destination 500
+		For the named range, GS does not have a table feature. Hence, use a formula for the dynamic range as source for the data validation
+
+		Lets say your list is on Sheet2 and you wish to use the Validation List with AutoComplete on Sheet1.
+
+		On Sheet1 A1 Enter =Sheet2!A1 and copy down including as many spare rows as needed (say 300 rows total). Hide these rows and use this formula in the Refers to: for a dynamic named range called MyList:
+
+		The equivalent of this is the FILTER
+		=OFFSET(Sheet1!$A$5,0,0,MATCH("*",Sheet1!$A$5:$A$54,-1),1)
+		=OFFSET(Customers!$A$5,0,0,MATCH("*",Customers!$A$5:$A$54,-1),1)
+		=FILTER(Customers!$A$5:$A$54, Customers!$A$5:$A$54 <> "")
+
+		
+		Ok, some quirks of Data validation:
+		1. If you want a dynamic list, do not use  formula. Instead use a range with indefinite end. A5:A, Customers!A5:A, 'Customer Name'!A5:A
+		2. It is because the drop down and autocomplete works only for a defined range. In the above, it will not include blank cells in the drop down
+		3. You can manually input the destination range as well as the source range
+
+
+		Make sure to select from the list before entering a new customer or supplier.
+
+		* Do this for the the Customer, Supplier, and Account columns
+		* Add macro to refresh Pivot Tables
+
+
+VERDICT:
+	Use the Google Sheets for on-the-go system
